@@ -1,0 +1,150 @@
+# DutyGate reference pack: inbound messages that may carry a legal or compliance obligation.
+#
+# Not legal advice. Which categories matter, and how they are routed, depends on your
+# jurisdiction and business: have counsel review this pack before production use.
+#
+# Questions are written recall-first: when in doubt, lean towards yes. A false alarm costs a
+# reviewer a few seconds; a miss can cost a statutory deadline.
+schema_version: 1
+name: legal-triggers
+version: 0.1.0
+description: >-
+  Flags inbound customer messages that may carry a legal or compliance obligation
+  (legal threats, regulator complaints, privacy requests, chargebacks, opt-outs,
+  accessibility requests) before a chatbot replies.
+state_field: customer_message
+
+defaults:
+  thresholds: { low: 0.2, high: 0.5 }
+  on_error: review
+
+limits:
+  max_message_chars: 8000
+
+context:
+  max_recent_messages: 0
+
+redaction:
+  - name: email
+    pattern: '(?<![\w.+-])[\w.+-]+@[\w-]+(?:\.[\w-]+)+'
+    replacement: '[EMAIL]'
+  - name: card_number
+    pattern: '\b(?:\d[ -]?){12,18}\d\b'
+    luhn: true
+    replacement: '[CARD]'
+
+questions:
+  - id: legal_threat
+    instructions: >-
+      Does the customer threaten, plan, or mention taking legal action against the business?
+    criteria:
+      true: >-
+        Mentions involving a lawyer, attorney or solicitor, suing, a lawsuit, court, small
+        claims, a class action, or "legal action", in any language, even vaguely or with typos
+        ("my lawyer will hear about this", "see you in court", "gonna sue").
+      false: >-
+        No threat or plan of legal action. Mentioning law or lawyers in passing without any
+        intent to act against the business ("my lawyer friend recommended you") is false.
+
+  - id: regulator_complaint
+    instructions: >-
+      Does the customer say they will report, or have already reported, the business to a
+      regulator, government agency, or consumer-protection body?
+    criteria:
+      true: >-
+        Mentions complaining or reporting to an authority such as the FTC, CFPB, FCC, a state
+        attorney general, a data protection authority (e.g. the ICO), an ombudsman, trading
+        standards, the Better Business Bureau, or "consumer protection", in any language.
+      false: >-
+        No mention of reporting to any authority. Threatening a bad online review or social
+        media post is false.
+
+  - id: privacy_request
+    instructions: >-
+      Is the customer asking to access, export, correct, or delete their personal data, or to
+      close their account so that their data is erased?
+    criteria:
+      true: >-
+        Asks for a copy of their data ("everything you have on me"), deletion or erasure of
+        their data or account, correction of their personal information, or invokes privacy
+        rights (GDPR, CCPA, "right to be forgotten", "data subject request"), in any language.
+      false: >-
+        Ordinary account help (password reset, changing a delivery address for an order) or a
+        general question about the privacy policy without asking for any action on their data.
+
+  - id: chargeback_dispute
+    instructions: >-
+      Does the customer say they have disputed, or will dispute, a charge with their bank,
+      card issuer, or payment provider?
+    criteria:
+      true: >-
+        Mentions a chargeback, disputing or reversing a charge with their bank, credit card
+        company, PayPal or another payment provider, or reporting the charge to their bank as
+        unauthorised or fraudulent, in any language.
+      false: >-
+        Asks the business itself for a refund or complains about a charge without involving
+        their bank or payment provider.
+
+  - id: opt_out
+    instructions: >-
+      Is the customer asking to stop receiving messages, calls, or marketing from the business,
+      or to unsubscribe?
+    criteria:
+      true: >-
+        Any request to stop contact through any channel: "STOP", "unsubscribe", "no more
+        emails", "stop texting me", "remove me from your list", "don't call me again", "take
+        me off your mailing list", in any language, including slang, typos and abbreviations.
+      false: >-
+        The word "stop" about something else (an app that keeps stopping, stopping an order),
+        or cancelling a purchase or subscription without asking to stop being contacted.
+
+  - id: accessibility_request
+    instructions: >-
+      Is the customer asking for an accommodation because of a disability or an accessibility
+      need?
+    criteria:
+      true: >-
+        Asks for an accessible format or channel (large print, braille, screen-reader
+        compatible documents, captions, a sign language interpreter, a phone call instead of
+        chat), or explains that a disability prevents them from using the service as offered.
+      false: >-
+        General feedback about design or usability with no accessibility need.
+
+rules:
+  - id: legal-threat
+    category: legal_threat
+    questions: [legal_threat]
+    queue: legal
+    priority: urgent
+    thresholds: { low: 0.15, high: 0.4 }
+
+  - id: regulator-complaint
+    category: regulator_complaint
+    questions: [regulator_complaint]
+    queue: legal
+    priority: urgent
+
+  - id: privacy-request
+    category: privacy_request
+    questions: [privacy_request]
+    queue: privacy
+    priority: high
+
+  - id: chargeback-dispute
+    category: chargeback_dispute
+    questions: [chargeback_dispute]
+    queue: billing-disputes
+    priority: high
+
+  - id: opt-out
+    category: opt_out
+    questions: [opt_out]
+    queue: compliance
+    priority: high
+    thresholds: { low: 0.15, high: 0.45 }
+
+  - id: accessibility-request
+    category: accessibility_request
+    questions: [accessibility_request]
+    queue: accessibility
+    priority: normal

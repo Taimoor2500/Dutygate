@@ -60,6 +60,9 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["src/dutygate"]
 
+[tool.hatch.build.targets.wheel.force-include]
+"packs" = "dutygate/packs"
+
 [tool.hatch.build.targets.sdist]
 include = [
     "/src",

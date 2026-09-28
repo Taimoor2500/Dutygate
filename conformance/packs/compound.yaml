@@ -1,0 +1,24 @@
+# Conformance-only pack that exercises `match: all` and a second pack on the sidecar.
+schema_version: 1
+name: compound
+version: 1.0.0
+description: Test pack for compound (match all) rules. Not for production use.
+
+questions:
+  - id: erasure
+    instructions: Is the customer asking for their data to be deleted?
+  - id: urgency
+    instructions: Does the customer say the matter is urgent?
+
+rules:
+  - id: urgent-erasure
+    category: urgent_erasure
+    match: all
+    questions: [erasure, urgency]
+    queue: privacy
+    priority: urgent
+  - id: erasure
+    category: erasure
+    questions: [erasure]
+    queue: privacy
+    priority: high

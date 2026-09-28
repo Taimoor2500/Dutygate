@@ -1,0 +1,107 @@
+# DutyGate companion pack: checks the BOT'S reply before it is sent.
+#
+# LLM bots create liability when they claim an action happened ("you've been unsubscribed")
+# that no workflow performed, admit fault, state legal positions, or promise outcomes.
+# route  = do not send the reply; send the holding reply and open a case.
+# review = send it, and queue a human review.
+#
+# Not legal advice: have counsel review what your bot may and may not say.
+schema_version: 1
+name: outbound-claims
+version: 0.1.1
+description: >-
+  Flags chatbot replies that claim an action was completed, admit liability, make legal
+  statements, or promise outcomes, before the reply is sent.
+state_field: assistant_reply
+
+defaults:
+  thresholds: { low: 0.2, high: 0.5 }
+  on_error: review
+
+limits:
+  max_message_chars: 8000
+
+context:
+  max_recent_messages: 1   # the customer message that prompted the reply
+
+redaction:
+  - name: email
+    pattern: '(?<![\w.+-])[\w.+-]+@[\w-]+(?:\.[\w-]+)+'
+    replacement: '[EMAIL]'
+  - name: card_number
+    pattern: '\b(?:\d[ -]?){12,18}\d\b'
+    luhn: true
+    replacement: '[CARD]'
+
+questions:
+  - id: admits_liability
+    instructions: Does the assistant's reply admit fault, blame, or legal liability on behalf of the business?
+    criteria:
+      true: >-
+        Says the business was at fault, is responsible or liable, broke a rule or law, or
+        "accepts responsibility" for harm ("this was our fault", "we are liable").
+      false: >-
+        A general apology for inconvenience ("sorry for the trouble") or acknowledging a
+        problem without accepting blame or liability.
+
+  - id: claims_action_completed
+    instructions: >-
+      Does the assistant's reply say that an account or data action has already been completed
+      (unsubscribed, data deleted, refund issued, account closed, cancellation done)?
+    criteria:
+      true: >-
+        States in the past or present perfect that such an action happened ("you've been
+        unsubscribed", "your data has been deleted", "I've processed your refund").
+      false: >-
+        Says the request was passed on, will be reviewed, or explains how the customer can do
+        it themselves, without claiming it is already done.
+
+  - id: legal_statement
+    instructions: >-
+      Does the assistant's reply give legal advice, or state the customer's or the business's
+      legal rights, obligations, or deadlines?
+    criteria:
+      true: >-
+        Mentions what the law requires, statutory deadlines ("we must respond within 30 days"),
+        legal rights ("you are entitled to"), or advises on legal action.
+      false: >-
+        Links to or mentions the privacy policy or terms without interpreting them legally.
+
+  - id: promises_outcome
+    instructions: >-
+      Does the assistant's reply commit the business to a future concession or guarantee, such as
+      money, a refund, credit, compensation, a fee waiver, or a guaranteed fix?
+    criteria:
+      true: >-
+        Commits to something a person would normally have to approve: "you will get a full
+        refund", "we'll give you $200 in credit", "we'll waive your fees", "I guarantee this
+        will be fixed by Friday", "you'll definitely be compensated".
+      false: >-
+        Factual information (usual shipping or refund times, a booked appointment, warranty
+        terms, how-to steps), a statement that something already happened, or saying a person
+        will look into it or follow up.
+
+rules:
+  - id: admits-liability
+    category: admits_liability
+    questions: [admits_liability]
+    queue: legal
+    priority: urgent
+
+  - id: claims-action-completed
+    category: claims_action_completed
+    questions: [claims_action_completed]
+    queue: compliance
+    priority: high
+
+  - id: legal-statement
+    category: legal_statement
+    questions: [legal_statement]
+    queue: legal
+    priority: high
+
+  - id: promises-outcome
+    category: promises_outcome
+    questions: [promises_outcome]
+    queue: support-lead
+    priority: normal

@@ -1,6 +1,6 @@
 [project]
 name = "dutygate"
-version = "0.1.0"
+version = "0.2.0"
 description = "DutyGate: a chatbot-agnostic gate that flags legal and compliance triggers in inbound messages before the bot replies."
 readme = "README.md"
 license = "MIT"

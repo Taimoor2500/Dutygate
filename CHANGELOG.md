@@ -6,6 +6,8 @@ All notable changes are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-09-28
+
 ### Added
 - Redaction files: your own redaction rules, in a YAML file named by `DUTYGATE_REDACTION_FILE`
   or `Gate.from_pack(..., redaction=...)`. They run before the pack's rules, and both apply.

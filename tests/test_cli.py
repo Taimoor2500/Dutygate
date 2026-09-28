@@ -232,7 +232,7 @@ def test_run_passes_metadata_and_recent(runner: CliRunner, tmp_path: Path) -> No
 
 def test_version_option(runner: CliRunner) -> None:
     res = runner.invoke(main, ["--version"])
-    assert res.exit_code == 0 and "0.1.0" in res.stdout
+    assert res.exit_code == 0 and "0.2.0" in res.stdout
 
 
 def test_cli_accepts_bundled_pack_names(runner: CliRunner) -> None:

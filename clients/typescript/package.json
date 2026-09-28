@@ -1,6 +1,6 @@
 {
   "name": "dutygate-client",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "TypeScript client for the DutyGate sidecar: flag legal and compliance triggers before a chatbot replies.",
   "license": "MIT",
   "author": "Taimoor Rashid",

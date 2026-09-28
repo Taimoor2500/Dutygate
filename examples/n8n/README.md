@@ -27,7 +27,7 @@ The response is the decision object:
 {"action": "route", "primary": "opt_out",
  "flags": [{"category": "opt_out", "queue": "compliance", "priority": "high",
             "confidence": 0.97, "level": "confident", "rule_id": "opt-out"}],
- "error": null, "policy": {"name": "legal-triggers", "version": "0.1.0"}, "...": "..."}
+ "error": null, "policy": {"name": "legal-triggers", "version": "0.2.0"}, "...": "..."}
 ```
 
 ## 3. Branch on `action`

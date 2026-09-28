@@ -11,7 +11,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Annotated, Any
 
-from fastapi import Depends, FastAPI, HTTPException, Request, Response
+from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from prometheus_client import CONTENT_TYPE_LATEST
@@ -80,25 +80,44 @@ class BodyLimit:
         await self.app(scope, limited, send)
 
 
-def _check_keys(config: ServerConfig) -> Callable[[Request], None]:
-    keys = [k.encode() for k in config.api_keys]
+def _key_matches(authorization: str, keys: Sequence[bytes]) -> bool:
+    scheme, _, token = authorization.partition(" ")
+    supplied = token.strip().encode()
+    # Compare against every key so timing does not reveal which key (if any) matched.
+    matched = False
+    for key in keys:
+        matched |= hmac.compare_digest(supplied, key)
+    return scheme.lower() == "bearer" and bool(supplied) and matched
 
-    def check(request: Request) -> None:
-        if config.insecure_no_auth:
-            return
-        scheme, _, token = request.headers.get("authorization", "").partition(" ")
-        supplied = token.strip().encode()
-        ok = scheme.lower() == "bearer" and bool(supplied)
-        # Compare against every key so timing does not reveal which key (if any) matched.
-        matched = False
-        for key in keys:
-            matched |= hmac.compare_digest(supplied, key)
-        if not (ok and matched):
-            raise HTTPException(
-                401, "invalid or missing API key", headers={"WWW-Authenticate": "Bearer"}
-            )
 
-    return check
+class ApiKeyAuth:
+    """Reject /v1/ requests without a valid key before the body is read or validated.
+
+    Unauthenticated callers always get 401: they learn nothing about body limits, request
+    validation or which packs exist.
+    """
+
+    def __init__(self, app: ASGIApp, api_keys: Sequence[str], prefix: str = "/v1/") -> None:
+        self.app = app
+        self.keys = [k.encode() for k in api_keys]
+        self.prefix = prefix
+
+    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
+        if scope["type"] == "http" and str(scope.get("path", "")).startswith(self.prefix):
+            authorization = ""
+            for name, value in scope.get("headers", []):
+                if name == b"authorization":
+                    authorization = value.decode("latin-1")
+                    break
+            if not _key_matches(authorization, self.keys):
+                response = JSONResponse(
+                    {"detail": "invalid or missing API key"},
+                    status_code=401,
+                    headers={"WWW-Authenticate": "Bearer"},
+                )
+                await response(scope, receive, send)
+                return
+        await self.app(scope, receive, send)
 
 
 def create_app(gates: Sequence[Gate], config: ServerConfig) -> FastAPI:
@@ -137,8 +156,10 @@ def create_app(gates: Sequence[Gate], config: ServerConfig) -> FastAPI:
         description="Flags legal and compliance triggers in inbound messages.",
         lifespan=lifespan,
     )
+    # Starlette runs the last-added middleware first: request id, then auth, then body limit.
     app.add_middleware(BodyLimit, max_bytes=config.max_body_bytes)
-    authorized = Depends(_check_keys(config))
+    if not config.insecure_no_auth:
+        app.add_middleware(ApiKeyAuth, api_keys=config.api_keys)
 
     @app.middleware("http")
     async def request_id(
@@ -194,18 +215,18 @@ def create_app(gates: Sequence[Gate], config: ServerConfig) -> FastAPI:
                 )
         return decision.to_dict()
 
-    @app.post("/v1/gate", dependencies=[authorized])
+    @app.post("/v1/gate")
     async def gate_default(body: GateRequest, request: Request) -> dict[str, Any]:
         return await judge(default, body, request)
 
-    @app.post("/v1/packs/{name}/gate", dependencies=[authorized])
+    @app.post("/v1/packs/{name}/gate")
     async def gate_named(name: str, body: GateRequest, request: Request) -> dict[str, Any]:
         gate = by_name.get(name)
         if gate is None:
             raise HTTPException(404, f"unknown pack '{name}'")
         return await judge(gate, body, request)
 
-    @app.get("/v1/policy", dependencies=[authorized])
+    @app.get("/v1/policy")
     async def policy() -> dict[str, Any]:
         return {
             "default": default.pack.name,

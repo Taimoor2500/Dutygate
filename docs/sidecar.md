@@ -45,7 +45,7 @@ Content-Type: application/json
 | status | when |
 |---|---|
 | 200 | a decision; backend failures are also 200, with `action: review` and `error` set |
-| 401 | missing or wrong key (`WWW-Authenticate: Bearer`) |
+| 401 | missing or wrong key (`WWW-Authenticate: Bearer`); checked before the body, so it wins over 404, 413 and 422 |
 | 404 | unknown pack |
 | 413 | body over 1 MB |
 | 422 | invalid body; the offending values are not echoed back |

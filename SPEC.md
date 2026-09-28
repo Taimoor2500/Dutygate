@@ -215,7 +215,8 @@ Request body (unknown fields are rejected):
 Status codes:
 - `200`: the Decision. Backend failures are also `200`, with the `on_error` action and
   `error` set.
-- `401`: bad or missing key.
+- `401`: bad or missing key. The key is checked before the body is read, so an
+  unauthenticated request gets `401` whatever its body, path or size.
 - `413`: body over 1 MB.
 - `422`: invalid body. Invalid input values are not echoed back.
 

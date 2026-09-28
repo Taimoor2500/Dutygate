@@ -327,3 +327,44 @@ async def test_audit_write_failure_still_returns_decision(
         assert res.status_code == 200 and res.json()["action"] == "route"
         text = (await c.get("/metrics")).text
     assert "dutygate_audit_failures_total 1.0" in text
+
+
+# ---------- auth runs before the body is read ----------
+
+
+@pytest.mark.parametrize(
+    ("content", "path"),
+    [
+        (b"{not json", GATE),
+        (b'{"message": null}', GATE),
+        (b'{"message": "hi", "extra_field": 1}', GATE),
+        (b'{"message": "hi"}', "/v1/packs/no-such-pack/gate"),
+        (b"x" * 2_000_000, GATE),
+    ],
+    ids=["malformed-json", "invalid-body", "unknown-field", "unknown-pack", "oversized-body"],
+)
+async def test_unauthenticated_requests_get_401_before_body_checks(
+    client: httpx.AsyncClient, content: bytes, path: str
+) -> None:
+    res = await client.post(path, content=content, headers={"content-type": "application/json"})
+    assert res.status_code == 401
+    assert res.headers["www-authenticate"] == "Bearer"
+    assert res.json() == {"detail": "invalid or missing API key"}
+    assert res.headers["x-request-id"]
+
+
+async def test_wrong_key_with_malformed_body_is_401(client: httpx.AsyncClient) -> None:
+    res = await client.post(
+        GATE,
+        content=b"{nope",
+        headers={"authorization": "Bearer wrong", "content-type": "application/json"},
+    )
+    assert res.status_code == 401
+
+
+async def test_policy_endpoint_unauthenticated_is_401_with_request_id(
+    client: httpx.AsyncClient,
+) -> None:
+    res = await client.get("/v1/policy", headers={"X-Request-Id": "r-auth"})
+    assert res.status_code == 401
+    assert res.headers["x-request-id"] == "r-auth"

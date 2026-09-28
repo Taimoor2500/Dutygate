@@ -88,7 +88,9 @@ def test_reference_pack_redaction_is_linear_on_long_input(text: str) -> None:
     r = Redactor(pack.redaction)
     started = time.perf_counter()
     r.redact(text)
-    assert time.perf_counter() - started < 0.05
+    # Catastrophic backtracking takes seconds on 8000 characters. The budget is loose because
+    # the card rule's Luhn search is Python code, which coverage tracing slows down on CI.
+    assert time.perf_counter() - started < 0.25
 
 
 def test_email_inside_long_word_run() -> None:

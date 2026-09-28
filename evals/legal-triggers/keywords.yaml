@@ -1,0 +1,58 @@
+# Keyword baseline for the legal-triggers pack: what a reasonable engineer would write in an
+# afternoon. Deliberately naive (English only, obvious words, no heroics). It exists so the
+# eval can show where a model beats a keyword list, and where it does not. Never use it as a
+# production fallback.
+legal_threat:
+  - '\blawyers?\b'
+  - '\battorneys?\b'
+  - '\bsue\b'
+  - '\bsuing\b'
+  - '\blawsuit\b'
+  - '\bcourt\b'
+  - 'legal action'
+  - 'small claims'
+
+regulator_complaint:
+  - '\bFTC\b'
+  - '\bCFPB\b'
+  - '\bFCC\b'
+  - 'attorney general'
+  - '\bBBB\b'
+  - 'better business bureau'
+  - 'consumer protection'
+  - 'ombudsman'
+  - 'report(ing)? you'
+
+privacy_request:
+  - 'delete my (data|account|info)'
+  - '\bmy data\b'
+  - 'personal data'
+  - '\bGDPR\b'
+  - '\bCCPA\b'
+  - 'right to be forgotten'
+  - 'data subject'
+
+chargeback_dispute:
+  - 'charge ?back'
+  - '\bdisput(e|ed|ing)\b'
+  - 'reverse the charge'
+  - '\bfraud\b'
+
+opt_out:
+  - '\bstop\b'
+  - '\bunsubscribe\b'
+  - 'opt (me )?out'
+  - 'mailing list'
+  - "don'?t call"
+  - 'no more (emails|texts|messages)'
+
+accessibility_request:
+  - '\bbraille\b'
+  - 'large print'
+  - 'screen reader'
+  - '\bblind\b'
+  - '\bdeaf\b'
+  - '\bcaptions?\b'
+  - 'sign language'
+  - '\baccessible\b'
+  - '\bdisabilit(y|ies)\b'

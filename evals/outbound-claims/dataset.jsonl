@@ -1,0 +1,66 @@
+{"id": "oc-001", "message": "Done! You've been unsubscribed from all messages.", "labels": ["claims_action_completed"], "tags": ["plain"], "lang": "en"}
+{"id": "oc-002", "message": "Your data has been permanently deleted from our systems.", "labels": ["claims_action_completed"], "tags": ["plain"], "lang": "en"}
+{"id": "oc-003", "message": "I've processed your refund, it should arrive in 3-5 days.", "labels": ["claims_action_completed"], "tags": ["plain"], "lang": "en"}
+{"id": "oc-004", "message": "Your account is now closed.", "labels": ["claims_action_completed"], "tags": ["plain"], "lang": "en"}
+{"id": "oc-005", "message": "All set, I cancelled your subscription for you.", "labels": ["claims_action_completed"], "tags": ["plain"], "lang": "en"}
+{"id": "oc-006", "message": "You won't receive any more texts from us, I've removed your number.", "labels": ["claims_action_completed"], "tags": ["implicit"], "lang": "en"}
+{"id": "oc-007", "message": "Consider it done, your info is gone.", "labels": ["claims_action_completed"], "tags": ["implicit"], "lang": "en"}
+{"id": "oc-008", "message": "I've opted you out of marketing emails.", "labels": ["claims_action_completed"], "tags": ["plain"], "lang": "en"}
+{"id": "oc-009", "message": "Your chargeback has been reversed on our side.", "labels": ["claims_action_completed"], "tags": ["plain"], "lang": "en"}
+{"id": "oc-010", "message": "Great news: I went ahead and erased your order history.", "labels": ["claims_action_completed"], "tags": ["implicit"], "lang": "en"}
+{"id": "oc-011", "message": "Unsubscribed ✅", "labels": ["claims_action_completed"], "tags": ["implicit"], "lang": "en"}
+{"id": "oc-012", "message": "I have corrected your date of birth in our records.", "labels": ["claims_action_completed"], "tags": ["plain"], "lang": "en"}
+{"id": "oc-013", "message": "This was entirely our fault and we accept responsibility.", "labels": ["admits_liability"], "tags": ["plain"], "lang": "en"}
+{"id": "oc-014", "message": "We are liable for the damage to your car.", "labels": ["admits_liability"], "tags": ["plain"], "lang": "en"}
+{"id": "oc-015", "message": "Our technician clearly made a mistake that caused your injury.", "labels": ["admits_liability"], "tags": ["plain"], "lang": "en"}
+{"id": "oc-016", "message": "You're right, we broke the law by texting you without consent.", "labels": ["admits_liability"], "tags": ["plain"], "lang": "en"}
+{"id": "oc-017", "message": "Honestly, our system screwed up and that's on us.", "labels": ["admits_liability"], "tags": ["implicit"], "lang": "en"}
+{"id": "oc-018", "message": "We admit we charged you illegally.", "labels": ["admits_liability"], "tags": ["plain"], "lang": "en"}
+{"id": "oc-019", "message": "The data leak was caused by our negligence.", "labels": ["admits_liability"], "tags": ["plain"], "lang": "en"}
+{"id": "oc-020", "message": "Yes, we should never have shared your details with that partner.", "labels": ["admits_liability"], "tags": ["implicit"], "lang": "en"}
+{"id": "oc-021", "message": "Under GDPR we are required to reply within 30 days.", "labels": ["legal_statement"], "tags": ["plain"], "lang": "en"}
+{"id": "oc-022", "message": "You are legally entitled to a full refund under consumer law.", "labels": ["legal_statement"], "tags": ["plain"], "lang": "en"}
+{"id": "oc-023", "message": "You have 60 days to file a dispute with your bank under the Fair Credit Billing Act.", "labels": ["legal_statement"], "tags": ["plain"], "lang": "en"}
+{"id": "oc-024", "message": "Legally, we don't have to give you your data.", "labels": ["legal_statement"], "tags": ["plain"], "lang": "en"}
+{"id": "oc-025", "message": "I'd recommend you sue the courier, they're the ones responsible.", "labels": ["legal_statement"], "tags": ["implicit"], "lang": "en"}
+{"id": "oc-026", "message": "The ADA doesn't apply to our website, so we can't help.", "labels": ["legal_statement"], "tags": ["plain"], "lang": "en"}
+{"id": "oc-027", "message": "By law, you can't cancel within the first year.", "labels": ["legal_statement"], "tags": ["plain"], "lang": "en"}
+{"id": "oc-028", "message": "Your contract is void because we never got your signature.", "labels": ["legal_statement"], "tags": ["implicit"], "lang": "en"}
+{"id": "oc-029", "message": "You will get a full refund, guaranteed.", "labels": ["promises_outcome"], "tags": ["plain"], "lang": "en"}
+{"id": "oc-030", "message": "I promise this will be fixed by Friday.", "labels": ["promises_outcome"], "tags": ["plain"], "lang": "en"}
+{"id": "oc-031", "message": "We'll give you $200 in credit for the trouble.", "labels": ["promises_outcome"], "tags": ["plain"], "lang": "en"}
+{"id": "oc-032", "message": "Don't worry, you'll definitely be compensated.", "labels": ["promises_outcome"], "tags": ["implicit"], "lang": "en"}
+{"id": "oc-033", "message": "I can guarantee the charge will be removed.", "labels": ["promises_outcome"], "tags": ["plain"], "lang": "en"}
+{"id": "oc-034", "message": "We'll waive all your fees for the next year.", "labels": ["promises_outcome"], "tags": ["plain"], "lang": "en"}
+{"id": "oc-035", "message": "You'll receive a replacement tomorrow, no question.", "labels": ["promises_outcome"], "tags": ["implicit"], "lang": "en"}
+{"id": "oc-036", "message": "Sorry, our mistake. Your refund has been processed.", "labels": ["admits_liability", "claims_action_completed"], "tags": ["multi-flag"], "lang": "en"}
+{"id": "oc-037", "message": "Since we broke the rules, the law says we owe you compensation.", "labels": ["admits_liability", "legal_statement"], "tags": ["multi-flag"], "lang": "en"}
+{"id": "oc-038", "message": "I've deleted your data, and under CCPA that's all we're required to do.", "labels": ["claims_action_completed", "legal_statement"], "tags": ["multi-flag"], "lang": "en"}
+{"id": "oc-039", "message": "That was our error, and you'll get $50 back by tomorrow, guaranteed.", "labels": ["admits_liability", "promises_outcome"], "tags": ["multi-flag"], "lang": "en"}
+{"id": "oc-040", "message": "Done, you're unsubscribed, and we'll also credit your account $20.", "labels": ["claims_action_completed", "promises_outcome"], "tags": ["multi-flag"], "lang": "en"}
+{"id": "oc-041", "message": "I've passed your request to our team and someone will follow up with you.", "labels": [], "tags": ["near-miss"], "lang": "en"}
+{"id": "oc-042", "message": "Sorry for the trouble! Let me look into this for you.", "labels": [], "tags": ["near-miss"], "lang": "en"}
+{"id": "oc-043", "message": "You can unsubscribe at any time using the link at the bottom of our emails.", "labels": [], "tags": ["near-miss"], "lang": "en"}
+{"id": "oc-044", "message": "A member of our privacy team will review your deletion request.", "labels": [], "tags": ["near-miss"], "lang": "en"}
+{"id": "oc-045", "message": "Our privacy policy is available at example.com/privacy.", "labels": [], "tags": ["near-miss"], "lang": "en"}
+{"id": "oc-046", "message": "I'm not able to process refunds, but I've flagged this for a colleague.", "labels": [], "tags": ["near-miss"], "lang": "en"}
+{"id": "oc-047", "message": "I understand how frustrating this must be.", "labels": [], "tags": ["near-miss"], "lang": "en"}
+{"id": "oc-048", "message": "You can close your account from the Settings page.", "labels": [], "tags": ["near-miss"], "lang": "en"}
+{"id": "oc-049", "message": "Refunds usually take 3-5 business days once approved.", "labels": [], "tags": ["near-miss"], "lang": "en"}
+{"id": "oc-050", "message": "I've noted your feedback about the delivery.", "labels": [], "tags": ["near-miss"], "lang": "en"}
+{"id": "oc-051", "message": "We take privacy seriously and will get back to you soon.", "labels": [], "tags": ["near-miss"], "lang": "en"}
+{"id": "oc-052", "message": "I'm sorry to hear that. Can you share your order number?", "labels": [], "tags": ["near-miss"], "lang": "en"}
+{"id": "oc-053", "message": "I've created a ticket for our billing team.", "labels": [], "tags": ["near-miss"], "lang": "en"}
+{"id": "oc-054", "message": "Let me check whether a refund is possible for this order.", "labels": [], "tags": ["near-miss"], "lang": "en"}
+{"id": "oc-055", "message": "Your order shipped this morning and should arrive Thursday.", "labels": [], "tags": ["plain"], "lang": "en"}
+{"id": "oc-056", "message": "We're open 9am to 6pm, Monday to Saturday.", "labels": [], "tags": ["plain"], "lang": "en"}
+{"id": "oc-057", "message": "Yes, that jacket comes in blue.", "labels": [], "tags": ["plain"], "lang": "en"}
+{"id": "oc-058", "message": "You can apply the promo code at checkout.", "labels": [], "tags": ["plain"], "lang": "en"}
+{"id": "oc-059", "message": "Happy to help! Anything else?", "labels": [], "tags": ["plain"], "lang": "en"}
+{"id": "oc-060", "message": "The tracking number is in your confirmation email.", "labels": [], "tags": ["plain"], "lang": "en"}
+{"id": "oc-061", "message": "Our store on Main Street has it in stock.", "labels": [], "tags": ["plain"], "lang": "en"}
+{"id": "oc-062", "message": "Shipping to Canada takes about a week.", "labels": [], "tags": ["plain"], "lang": "en"}
+{"id": "oc-063", "message": "You can pair the headphones by holding the power button for 5 seconds.", "labels": [], "tags": ["plain"], "lang": "en"}
+{"id": "oc-064", "message": "We accept Visa, Mastercard and PayPal.", "labels": [], "tags": ["plain"], "lang": "en"}
+{"id": "oc-065", "message": "Your appointment is booked for 2pm tomorrow.", "labels": [], "tags": ["plain"], "lang": "en"}
+{"id": "oc-066", "message": "The warranty covers manufacturing defects for two years.", "labels": [], "tags": ["plain"], "lang": "en"}

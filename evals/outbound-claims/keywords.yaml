@@ -1,0 +1,27 @@
+# Naive keyword baseline for the outbound-claims pack. Evaluation only; never a fallback.
+admits_liability:
+  - 'our fault'
+  - '\bliable\b'
+  - 'our mistake'
+  - 'accept responsibility'
+  - '\bnegligence\b'
+
+claims_action_completed:
+  - "you've been unsubscribed"
+  - 'has been (deleted|processed|cancelled|closed|removed)'
+  - "i've (processed|deleted|cancelled|removed)"
+  - '\bunsubscribed\b'
+
+legal_statement:
+  - '\bGDPR\b'
+  - '\bCCPA\b'
+  - '\blegally\b'
+  - 'by law'
+  - 'under .* law'
+  - 'entitled to'
+
+promises_outcome:
+  - '\bguarantee(d)?\b'
+  - '\bpromise\b'
+  - 'full refund'
+  - 'in credit'

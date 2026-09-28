@@ -63,3 +63,16 @@ def test_langchain_bot() -> None:
     assert mod.CASES[-1] == {"queue": "compliance", "category": "opt_out"}
     normal = bot.invoke({"input": "where is my order?"})
     assert normal.content == "Happy to help with that!"
+
+
+def test_langgraph_bot() -> None:
+    from langchain_core.messages import HumanMessage
+
+    mod = load("langgraph_bot/graph.py")
+    app = mod.build_graph(mod.default_model(), mod.load_gate("legal-triggers"))
+    held = app.invoke({"messages": [HumanMessage("pls stop texting me")]})
+    assert held["messages"][-1].content.startswith("Thanks for your message")
+    assert held["dutygate"]["action"] == "route"
+    assert mod.CASES[-1]["queue"] == "compliance"
+    normal = app.invoke({"messages": [HumanMessage("where is my order?")]})
+    assert normal["messages"][-1].content == "Happy to help with that!"

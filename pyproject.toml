@@ -31,6 +31,7 @@ dependencies = [
 [project.optional-dependencies]
 server = ["fastapi>=0.110", "uvicorn[standard]>=0.29", "prometheus-client>=0.20"]
 langchain = ["langchain-core>=0.3"]
+langgraph = ["langgraph>=1.0"]
 
 [project.scripts]
 dutygate = "dutygate.cli:main"

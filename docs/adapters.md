@@ -58,6 +58,48 @@ bot.invoke({"input": "pls stop texting me"})  # → AIMessage(holding reply), mo
 
 Example: [examples/langchain_bot](../examples/langchain_bot/bot.py).
 
+## LangGraph
+
+```console
+pip install 'dutygate[langgraph]'
+```
+
+DutyGate becomes two nodes in your graph: one before the agent and, optionally, one after it.
+
+```python
+from langgraph.graph import END, START, StateGraph
+from dutygate import Gate
+from dutygate.adapters.langgraph import DutyGateState, after_gate, gate_node, outbound_node
+
+graph = StateGraph(DutyGateState)  # or subclass it to add your own fields
+graph.add_node("dutygate", gate_node(Gate.from_pack("legal-triggers"), on_route=create_case))
+graph.add_node("agent", agent)
+graph.add_node(
+    "check_reply", outbound_node(Gate.from_pack("outbound-claims"), on_route=create_case)
+)
+graph.add_edge(START, "dutygate")
+graph.add_conditional_edges("dutygate", after_gate("agent"))  # END on route
+graph.add_edge("agent", "check_reply")
+graph.add_edge("check_reply", END)
+app = graph.compile()
+```
+
+- **`gate_node`** checks the latest human message and writes the decision to
+  `state["dutygate"]`. On `route` it appends the holding reply, and `after_gate` ends the
+  graph, so the agent never runs. `on_route` and `on_review` receive the decision and the
+  text; they can be sync or async.
+- **`outbound_node`** checks the agent's latest reply, with the customer's message as
+  context. On `route` it replaces that reply in place (same message id) with the holding
+  reply, so a risky reply never reaches the customer. Its decision goes to
+  `state["dutygate_outbound"]`.
+- **Invocation:** both nodes work with `invoke`, `ainvoke` and streaming, with or without a
+  checkpointer. Each turn checks that turn's latest message.
+- **Custom state:** use `messages_key=` and `state_key=` if your state names differ, and
+  declare the decision keys in your state schema, since LangGraph rejects updates to
+  undeclared keys.
+
+Example: [examples/langgraph_bot](../examples/langgraph_bot/graph.py).
+
 ## Other stacks
 
 Any other language, framework or no-code tool can call the HTTP sidecar; see

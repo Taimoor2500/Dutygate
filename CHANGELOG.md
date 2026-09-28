@@ -29,7 +29,8 @@ All notable changes are documented here. The format follows
   - Docker image
 - TypeScript client `dutygate-client`: zero dependencies, fail-safe `review` fallback,
   ESM and CJS builds.
-- `GatedHandler` for any web framework, and the LangChain `with_legal_gate` adapter.
+- `GatedHandler` for any web framework, the LangChain `with_legal_gate` adapter, and LangGraph
+  `gate_node` / `outbound_node` (extra `langgraph`).
 - Packs: `legal-triggers` (inbound) and `outbound-claims` (the bot's replies), bundled in the
   package with their sample datasets and keyword baselines, and loadable by name.
 - `dutygate init <pack>` copies a bundled pack, its dataset and its keywords into your project

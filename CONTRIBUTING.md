@@ -7,7 +7,7 @@ evaluation data are all welcome.
 
 ```console
 git clone https://github.com/Taimoor2500/Dutygate && cd Dutygate
-uv sync --extra server --extra langchain     # Python 3.10+
+uv sync --extra server --extra langchain --extra langgraph     # Python 3.10+
 uv run pytest                                # no network needed
 cd clients/typescript && npm ci && npm test
 ```

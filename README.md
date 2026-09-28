@@ -93,7 +93,8 @@ else:
 ```
 
 `GatedHandler` (in `dutygate.adapters.webhook`) wraps exactly this logic for any web
-framework, and `with_legal_gate` does the same for LangChain runnables. See
+framework, `with_legal_gate` does the same for LangChain runnables, and
+`gate_node` / `outbound_node` add DutyGate to a LangGraph graph. See
 [docs/adapters.md](docs/adapters.md).
 
 ### Any language: the HTTP sidecar
@@ -161,6 +162,7 @@ categories or tighten questions without touching code ([SPEC.md](SPEC.md)).
 | TypeScript client `dutygate-client` | ✅ passes the conformance suite end to end |
 | `GatedHandler` for any web framework (FastAPI, Flask examples) | ✅ |
 | LangChain `with_legal_gate` | ✅ |
+| LangGraph gate and outbound nodes | ✅ |
 
 Every surface must reproduce [`conformance/cases.json`](conformance/cases.json).
 
@@ -189,7 +191,7 @@ measure on your own traffic before you rely on this. See [evals/README.md](evals
 - [SPEC.md](SPEC.md): pack format, evaluation algorithm, decision contract (normative)
 - [docs/integration.md](docs/integration.md): host contract, holding replies, failure behavior, latency patterns
 - [docs/sidecar.md](docs/sidecar.md): HTTP API, auth, metrics, audit log, Docker
-- [docs/adapters.md](docs/adapters.md): `GatedHandler`, LangChain
+- [docs/adapters.md](docs/adapters.md): `GatedHandler`, LangChain, LangGraph
 - [docs/privacy.md](docs/privacy.md): what leaves your system, redaction, prompt injection
 - [docs/labeling.md](docs/labeling.md): building a real evaluation set
 - [CONTRIBUTING.md](CONTRIBUTING.md) · [SECURITY.md](SECURITY.md) · [CHANGELOG.md](CHANGELOG.md)

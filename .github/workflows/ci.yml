@@ -1,0 +1,98 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync --all-extras
+      - run: uv run ruff check
+      - run: uv run ruff format --check
+      - run: uv run mypy
+
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python: ["3.10", "3.11", "3.12", "3.13"]
+        include:
+          - os: macos-latest
+            python: "3.12"
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: ${{ matrix.python }}
+      - run: uv sync --all-extras
+      - run: uv run pytest --cov=dutygate --cov-report=term --cov-fail-under=90
+
+  typescript:
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ["18", "20", "22"]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: clients/typescript
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+          cache-dependency-path: clients/typescript/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
+  conformance-e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync --extra server
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: clients/typescript/package-lock.json
+      - run: npm ci
+        working-directory: clients/typescript
+      - run: npm run test:e2e
+        working-directory: clients/typescript
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t dutygate:ci .
+      - name: Smoke test the image
+        run: |
+          docker run -d --name gate -p 8080:8080 -e DUTYGATE_SIDECAR_KEYS=ci \
+            -v "$PWD/evals:/evals:ro" dutygate:ci \
+            /packs/legal-triggers.yaml --host 0.0.0.0 --backend keyword \
+            --keywords /evals/legal-triggers/keywords.yaml
+          for i in $(seq 1 30); do curl -sf localhost:8080/healthz && break; sleep 1; done
+          curl -sf -H 'Authorization: Bearer ci' -H 'Content-Type: application/json' \
+            -d '{"message":"stop texting me"}' localhost:8080/v1/gate | tee out.json
+          grep -q '"action":"route"' out.json
+          test "$(curl -s -o /dev/null -w '%{http_code}' -d '{}' localhost:8080/v1/gate)" = 401
+      - if: always()
+        run: docker logs gate || true

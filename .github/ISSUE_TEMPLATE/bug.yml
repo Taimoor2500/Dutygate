@@ -1,0 +1,33 @@
+name: Bug report
+description: Something in DutyGate does not work as documented
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please never paste real customer messages. Use a synthetic example that shows the problem.
+        Security issues go through the Security tab, not here.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+    validations: { required: true }
+  - type: textarea
+    id: repro
+    attributes:
+      label: How to reproduce
+      description: Commands, pack snippet, and a synthetic message. Include the decision JSON if you have it.
+      render: console
+    validations: { required: true }
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: "`dutygate --version`, or the npm client version"
+    validations: { required: true }
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Surface
+      options: [Python library, CLI, HTTP sidecar / Docker, TypeScript client, LangChain adapter, GatedHandler, Pack / detection quality]
+    validations: { required: true }

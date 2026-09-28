@@ -1,0 +1,1905 @@
+{
+  "version": 1,
+  "description": "Backend-agnostic conformance cases. Every DutyGate surface must reproduce `expected` for each case; `id` and `latency_ms` are never compared.",
+  "packs": {
+    "legal-triggers": "packs/legal-triggers.yaml",
+    "compound": "conformance/packs/compound.yaml",
+    "outbound-claims": "packs/outbound-claims.yaml"
+  },
+  "cases": [
+    {
+      "name": "legal threat routes",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "I'm getting my lawyer involved"
+      },
+      "backend": {
+        "scores": {
+          "legal_threat": 0.93,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.02,
+          "chargeback_dispute": 0.02,
+          "opt_out": 0.02,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "route",
+        "primary": "legal_threat",
+        "flags": [
+          {
+            "category": "legal_threat",
+            "rule_id": "legal-threat",
+            "queue": "legal",
+            "priority": "urgent",
+            "confidence": 0.93,
+            "level": "confident"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "regulator complaint routes",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "I'm reporting you to the FTC"
+      },
+      "backend": {
+        "scores": {
+          "legal_threat": 0.02,
+          "regulator_complaint": 0.88,
+          "privacy_request": 0.02,
+          "chargeback_dispute": 0.02,
+          "opt_out": 0.02,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "route",
+        "primary": "regulator_complaint",
+        "flags": [
+          {
+            "category": "regulator_complaint",
+            "rule_id": "regulator-complaint",
+            "queue": "legal",
+            "priority": "urgent",
+            "confidence": 0.88,
+            "level": "confident"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "privacy request routes",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "delete my account and all my data"
+      },
+      "backend": {
+        "scores": {
+          "legal_threat": 0.02,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.95,
+          "chargeback_dispute": 0.02,
+          "opt_out": 0.02,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "route",
+        "primary": "privacy_request",
+        "flags": [
+          {
+            "category": "privacy_request",
+            "rule_id": "privacy-request",
+            "queue": "privacy",
+            "priority": "high",
+            "confidence": 0.95,
+            "level": "confident"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "chargeback routes",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "I've already disputed this with my bank"
+      },
+      "backend": {
+        "scores": {
+          "legal_threat": 0.02,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.02,
+          "chargeback_dispute": 0.9,
+          "opt_out": 0.02,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "route",
+        "primary": "chargeback_dispute",
+        "flags": [
+          {
+            "category": "chargeback_dispute",
+            "rule_id": "chargeback-dispute",
+            "queue": "billing-disputes",
+            "priority": "high",
+            "confidence": 0.9,
+            "level": "confident"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "opt out routes",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "pls stop texting me"
+      },
+      "backend": {
+        "scores": {
+          "legal_threat": 0.02,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.02,
+          "chargeback_dispute": 0.02,
+          "opt_out": 0.97,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "route",
+        "primary": "opt_out",
+        "flags": [
+          {
+            "category": "opt_out",
+            "rule_id": "opt-out",
+            "queue": "compliance",
+            "priority": "high",
+            "confidence": 0.97,
+            "level": "confident"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "accessibility routes",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "I'm blind and need this invoice in an accessible format"
+      },
+      "backend": {
+        "scores": {
+          "legal_threat": 0.02,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.02,
+          "chargeback_dispute": 0.02,
+          "opt_out": 0.02,
+          "accessibility_request": 0.91
+        }
+      },
+      "expected": {
+        "action": "route",
+        "primary": "accessibility_request",
+        "flags": [
+          {
+            "category": "accessibility_request",
+            "rule_id": "accessibility-request",
+            "queue": "accessibility",
+            "priority": "normal",
+            "confidence": 0.91,
+            "level": "confident"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "clean message continues",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "where is my order?"
+      },
+      "backend": {
+        "scores": {
+          "legal_threat": 0.02,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.02,
+          "chargeback_dispute": 0.02,
+          "opt_out": 0.02,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "continue",
+        "primary": null,
+        "flags": [],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "two confident flags in rule order",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "erase my data and stop the emails"
+      },
+      "backend": {
+        "scores": {
+          "legal_threat": 0.02,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.93,
+          "chargeback_dispute": 0.02,
+          "opt_out": 0.71,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "route",
+        "primary": "privacy_request",
+        "flags": [
+          {
+            "category": "privacy_request",
+            "rule_id": "privacy-request",
+            "queue": "privacy",
+            "priority": "high",
+            "confidence": 0.93,
+            "level": "confident"
+          },
+          {
+            "category": "opt_out",
+            "rule_id": "opt-out",
+            "queue": "compliance",
+            "priority": "high",
+            "confidence": 0.71,
+            "level": "confident"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "rule order beats score",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "my lawyer says you must delete my data"
+      },
+      "backend": {
+        "scores": {
+          "legal_threat": 0.6,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.9,
+          "chargeback_dispute": 0.02,
+          "opt_out": 0.02,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "route",
+        "primary": "legal_threat",
+        "flags": [
+          {
+            "category": "legal_threat",
+            "rule_id": "legal-threat",
+            "queue": "legal",
+            "priority": "urgent",
+            "confidence": 0.6,
+            "level": "confident"
+          },
+          {
+            "category": "privacy_request",
+            "rule_id": "privacy-request",
+            "queue": "privacy",
+            "priority": "high",
+            "confidence": 0.9,
+            "level": "confident"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "confident before grey",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "send me all my data, or else"
+      },
+      "backend": {
+        "scores": {
+          "legal_threat": 0.2,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.8,
+          "chargeback_dispute": 0.02,
+          "opt_out": 0.02,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "route",
+        "primary": "privacy_request",
+        "flags": [
+          {
+            "category": "privacy_request",
+            "rule_id": "privacy-request",
+            "queue": "privacy",
+            "priority": "high",
+            "confidence": 0.8,
+            "level": "confident"
+          },
+          {
+            "category": "legal_threat",
+            "rule_id": "legal-threat",
+            "queue": "legal",
+            "priority": "urgent",
+            "confidence": 0.2,
+            "level": "grey"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "grey only reviews",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "you'll be hearing from people about this"
+      },
+      "backend": {
+        "scores": {
+          "legal_threat": 0.3,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.02,
+          "chargeback_dispute": 0.02,
+          "opt_out": 0.02,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "review",
+        "primary": "legal_threat",
+        "flags": [
+          {
+            "category": "legal_threat",
+            "rule_id": "legal-threat",
+            "queue": "legal",
+            "priority": "urgent",
+            "confidence": 0.3,
+            "level": "grey"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "several grey flags",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "this is not ok, I might take this further"
+      },
+      "backend": {
+        "scores": {
+          "legal_threat": 0.25,
+          "regulator_complaint": 0.3,
+          "privacy_request": 0.02,
+          "chargeback_dispute": 0.02,
+          "opt_out": 0.02,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "review",
+        "primary": "legal_threat",
+        "flags": [
+          {
+            "category": "legal_threat",
+            "rule_id": "legal-threat",
+            "queue": "legal",
+            "priority": "urgent",
+            "confidence": 0.25,
+            "level": "grey"
+          },
+          {
+            "category": "regulator_complaint",
+            "rule_id": "regulator-complaint",
+            "queue": "legal",
+            "priority": "urgent",
+            "confidence": 0.3,
+            "level": "grey"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "default high is inclusive",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "the bank is looking at this charge"
+      },
+      "backend": {
+        "scores": {
+          "legal_threat": 0.02,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.02,
+          "chargeback_dispute": 0.5,
+          "opt_out": 0.02,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "route",
+        "primary": "chargeback_dispute",
+        "flags": [
+          {
+            "category": "chargeback_dispute",
+            "rule_id": "chargeback-dispute",
+            "queue": "billing-disputes",
+            "priority": "high",
+            "confidence": 0.5,
+            "level": "confident"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "default low is inclusive",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "I might talk to my card company"
+      },
+      "backend": {
+        "scores": {
+          "legal_threat": 0.02,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.02,
+          "chargeback_dispute": 0.2,
+          "opt_out": 0.02,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "review",
+        "primary": "chargeback_dispute",
+        "flags": [
+          {
+            "category": "chargeback_dispute",
+            "rule_id": "chargeback-dispute",
+            "queue": "billing-disputes",
+            "priority": "high",
+            "confidence": 0.2,
+            "level": "grey"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "just below default low continues",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "was I charged twice?"
+      },
+      "backend": {
+        "scores": {
+          "legal_threat": 0.02,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.02,
+          "chargeback_dispute": 0.19,
+          "opt_out": 0.02,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "continue",
+        "primary": null,
+        "flags": [],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "override high is inclusive",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "I will take this further legally"
+      },
+      "backend": {
+        "scores": {
+          "legal_threat": 0.4,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.02,
+          "chargeback_dispute": 0.02,
+          "opt_out": 0.02,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "route",
+        "primary": "legal_threat",
+        "flags": [
+          {
+            "category": "legal_threat",
+            "rule_id": "legal-threat",
+            "queue": "legal",
+            "priority": "urgent",
+            "confidence": 0.4,
+            "level": "confident"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "override low is inclusive",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "people have been sued for less"
+      },
+      "backend": {
+        "scores": {
+          "legal_threat": 0.15,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.02,
+          "chargeback_dispute": 0.02,
+          "opt_out": 0.02,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "review",
+        "primary": "legal_threat",
+        "flags": [
+          {
+            "category": "legal_threat",
+            "rule_id": "legal-threat",
+            "queue": "legal",
+            "priority": "urgent",
+            "confidence": 0.15,
+            "level": "grey"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "just below override low continues",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "is this legal?"
+      },
+      "backend": {
+        "scores": {
+          "legal_threat": 0.14,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.02,
+          "chargeback_dispute": 0.02,
+          "opt_out": 0.02,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "continue",
+        "primary": null,
+        "flags": [],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "opt out override high",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "enough messages"
+      },
+      "backend": {
+        "scores": {
+          "legal_threat": 0.02,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.02,
+          "chargeback_dispute": 0.02,
+          "opt_out": 0.45,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "route",
+        "primary": "opt_out",
+        "flags": [
+          {
+            "category": "opt_out",
+            "rule_id": "opt-out",
+            "queue": "compliance",
+            "priority": "high",
+            "confidence": 0.45,
+            "level": "confident"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "opt out override grey",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "so many messages lately"
+      },
+      "backend": {
+        "scores": {
+          "legal_threat": 0.02,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.02,
+          "chargeback_dispute": 0.02,
+          "opt_out": 0.44,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "review",
+        "primary": "opt_out",
+        "flags": [
+          {
+            "category": "opt_out",
+            "rule_id": "opt-out",
+            "queue": "compliance",
+            "priority": "high",
+            "confidence": 0.44,
+            "level": "grey"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "confidence rounded to 4 places",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "my attorney is drafting a letter"
+      },
+      "backend": {
+        "scores": {
+          "legal_threat": 0.912345,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.02,
+          "chargeback_dispute": 0.02,
+          "opt_out": 0.02,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "route",
+        "primary": "legal_threat",
+        "flags": [
+          {
+            "category": "legal_threat",
+            "rule_id": "legal-threat",
+            "queue": "legal",
+            "priority": "urgent",
+            "confidence": 0.9123,
+            "level": "confident"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "rounding never promotes a grey flag",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "maybe I should get advice"
+      },
+      "backend": {
+        "scores": {
+          "legal_threat": 0.39999,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.02,
+          "chargeback_dispute": 0.02,
+          "opt_out": 0.02,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "review",
+        "primary": "legal_threat",
+        "flags": [
+          {
+            "category": "legal_threat",
+            "rule_id": "legal-threat",
+            "queue": "legal",
+            "priority": "urgent",
+            "confidence": 0.4,
+            "level": "grey"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "blank message continues",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "   "
+      },
+      "backend": {},
+      "expected": {
+        "action": "continue",
+        "primary": null,
+        "flags": [],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "message over the limit reviews",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+      },
+      "backend": {},
+      "expected": {
+        "action": "review",
+        "primary": null,
+        "flags": [],
+        "error_code": "message_too_long",
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "message at the limit is judged",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"
+      },
+      "backend": {
+        "scores": {
+          "legal_threat": 0.02,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.02,
+          "chargeback_dispute": 0.02,
+          "opt_out": 0.02,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "continue",
+        "primary": null,
+        "flags": [],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "email redacted before backend",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "email me at jane.doe@example.com, delete everything"
+      },
+      "backend": {
+        "scores": {
+          "legal_threat": 0.02,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.9,
+          "chargeback_dispute": 0.02,
+          "opt_out": 0.02,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "route",
+        "primary": "privacy_request",
+        "flags": [
+          {
+            "category": "privacy_request",
+            "rule_id": "privacy-request",
+            "queue": "privacy",
+            "priority": "high",
+            "confidence": 0.9,
+            "level": "confident"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      },
+      "expect_state": {
+        "customer_message": "email me at [EMAIL], delete everything"
+      }
+    },
+    {
+      "name": "card redacted before backend",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "card 4111 1111 1111 1111 was charged twice, I disputed it with my bank"
+      },
+      "backend": {
+        "scores": {
+          "legal_threat": 0.02,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.02,
+          "chargeback_dispute": 0.92,
+          "opt_out": 0.02,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "route",
+        "primary": "chargeback_dispute",
+        "flags": [
+          {
+            "category": "chargeback_dispute",
+            "rule_id": "chargeback-dispute",
+            "queue": "billing-disputes",
+            "priority": "high",
+            "confidence": 0.92,
+            "level": "confident"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      },
+      "expect_state": {
+        "customer_message": "card [CARD] was charged twice, I disputed it with my bank"
+      }
+    },
+    {
+      "name": "card followed by cvv still redacted",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "my card 4111 1111 1111 1111 123 was charged, I disputed it"
+      },
+      "backend": {
+        "scores": {
+          "legal_threat": 0.02,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.02,
+          "chargeback_dispute": 0.9,
+          "opt_out": 0.02,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "route",
+        "primary": "chargeback_dispute",
+        "flags": [
+          {
+            "category": "chargeback_dispute",
+            "rule_id": "chargeback-dispute",
+            "queue": "billing-disputes",
+            "priority": "high",
+            "confidence": 0.9,
+            "level": "confident"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      },
+      "expect_state": {
+        "customer_message": "my card [CARD] 123 was charged, I disputed it"
+      }
+    },
+    {
+      "name": "luhn-invalid number untouched",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "order 1234 5678 9012 3456 never arrived"
+      },
+      "backend": {
+        "scores": {
+          "legal_threat": 0.02,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.02,
+          "chargeback_dispute": 0.02,
+          "opt_out": 0.02,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "continue",
+        "primary": null,
+        "flags": [],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      },
+      "expect_state": {
+        "customer_message": "order 1234 5678 9012 3456 never arrived"
+      }
+    },
+    {
+      "name": "channel passed in state",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "STOP",
+        "channel": "sms",
+        "conversation_id": "c_sms_1"
+      },
+      "backend": {
+        "scores": {
+          "legal_threat": 0.02,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.02,
+          "chargeback_dispute": 0.02,
+          "opt_out": 0.99,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "route",
+        "primary": "opt_out",
+        "flags": [
+          {
+            "category": "opt_out",
+            "rule_id": "opt-out",
+            "queue": "compliance",
+            "priority": "high",
+            "confidence": 0.99,
+            "level": "confident"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": "c_sms_1"
+      },
+      "expect_state": {
+        "customer_message": "STOP",
+        "channel": "sms"
+      }
+    },
+    {
+      "name": "recent messages ignored when disabled",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "yes please do that",
+        "recent_messages": [
+          "can you delete my data?"
+        ]
+      },
+      "backend": {
+        "scores": {
+          "legal_threat": 0.02,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.02,
+          "chargeback_dispute": 0.02,
+          "opt_out": 0.02,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "continue",
+        "primary": null,
+        "flags": [],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      },
+      "expect_state": {
+        "customer_message": "yes please do that"
+      }
+    },
+    {
+      "name": "spanish privacy request",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "Quiero que borren todos mis datos"
+      },
+      "backend": {
+        "scores": {
+          "legal_threat": 0.02,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.9,
+          "chargeback_dispute": 0.02,
+          "opt_out": 0.02,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "route",
+        "primary": "privacy_request",
+        "flags": [
+          {
+            "category": "privacy_request",
+            "rule_id": "privacy-request",
+            "queue": "privacy",
+            "priority": "high",
+            "confidence": 0.9,
+            "level": "confident"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "arabic with emoji",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "أريد حذف بياناتي 😡"
+      },
+      "backend": {
+        "scores": {
+          "legal_threat": 0.02,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.88,
+          "chargeback_dispute": 0.02,
+          "opt_out": 0.02,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "route",
+        "primary": "privacy_request",
+        "flags": [
+          {
+            "category": "privacy_request",
+            "rule_id": "privacy-request",
+            "queue": "privacy",
+            "priority": "high",
+            "confidence": 0.88,
+            "level": "confident"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      },
+      "expect_state": {
+        "customer_message": "أريد حذف بياناتي 😡"
+      }
+    },
+    {
+      "name": "backend error backend_timeout",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "please help, case for backend_timeout"
+      },
+      "backend": {
+        "error": "backend_timeout"
+      },
+      "expected": {
+        "action": "review",
+        "primary": null,
+        "flags": [],
+        "error_code": "backend_timeout",
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "backend error backend_unavailable",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "please help, case for backend_unavailable"
+      },
+      "backend": {
+        "error": "backend_unavailable"
+      },
+      "expected": {
+        "action": "review",
+        "primary": null,
+        "flags": [],
+        "error_code": "backend_unavailable",
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "backend error backend_auth",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "please help, case for backend_auth"
+      },
+      "backend": {
+        "error": "backend_auth"
+      },
+      "expected": {
+        "action": "review",
+        "primary": null,
+        "flags": [],
+        "error_code": "backend_auth",
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "backend error backend_rejected",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "please help, case for backend_rejected"
+      },
+      "backend": {
+        "error": "backend_rejected"
+      },
+      "expected": {
+        "action": "review",
+        "primary": null,
+        "flags": [],
+        "error_code": "backend_rejected",
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "backend error malformed_response",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "please help, case for malformed_response"
+      },
+      "backend": {
+        "error": "malformed_response"
+      },
+      "expected": {
+        "action": "review",
+        "primary": null,
+        "flags": [],
+        "error_code": "malformed_response",
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "missing answer is malformed",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "missing answer case"
+      },
+      "backend": {
+        "raw_answers": {
+          "legal_threat": 0.1,
+          "regulator_complaint": 0.1,
+          "privacy_request": 0.1,
+          "chargeback_dispute": 0.1,
+          "accessibility_request": 0.1
+        }
+      },
+      "expected": {
+        "action": "review",
+        "primary": null,
+        "flags": [],
+        "error_code": "malformed_response",
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "out of range answer is malformed",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "out of range case"
+      },
+      "backend": {
+        "raw_answers": {
+          "legal_threat": 1.5,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.02,
+          "chargeback_dispute": 0.02,
+          "opt_out": 0.02,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "review",
+        "primary": null,
+        "flags": [],
+        "error_code": "malformed_response",
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "string answer is malformed",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "string answer case"
+      },
+      "backend": {
+        "raw_answers": {
+          "legal_threat": "high",
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.02,
+          "chargeback_dispute": 0.02,
+          "opt_out": 0.02,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "review",
+        "primary": null,
+        "flags": [],
+        "error_code": "malformed_response",
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "null answer is malformed",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "null answer case"
+      },
+      "backend": {
+        "raw_answers": {
+          "legal_threat": null,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.02,
+          "chargeback_dispute": 0.02,
+          "opt_out": 0.02,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "review",
+        "primary": null,
+        "flags": [],
+        "error_code": "malformed_response",
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "partial answers never evaluated",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "partial answers with a strong signal"
+      },
+      "backend": {
+        "raw_answers": {
+          "legal_threat": 0.99
+        }
+      },
+      "expected": {
+        "action": "review",
+        "primary": null,
+        "flags": [],
+        "error_code": "malformed_response",
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "extra answers ignored",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "extra answers case"
+      },
+      "backend": {
+        "raw_answers": {
+          "legal_threat": 0.02,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.02,
+          "chargeback_dispute": 0.02,
+          "opt_out": 0.02,
+          "accessibility_request": 0.02,
+          "surprise": 0.99
+        }
+      },
+      "expected": {
+        "action": "continue",
+        "primary": null,
+        "flags": [],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.1.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "match all needs every question",
+      "pack": "compound",
+      "input": {
+        "message": "delete my data right now, urgent!"
+      },
+      "backend": {
+        "scores": {
+          "erasure": 0.9,
+          "urgency": 0.8
+        }
+      },
+      "expected": {
+        "action": "route",
+        "primary": "urgent_erasure",
+        "flags": [
+          {
+            "category": "urgent_erasure",
+            "rule_id": "urgent-erasure",
+            "queue": "privacy",
+            "priority": "urgent",
+            "confidence": 0.8,
+            "level": "confident"
+          },
+          {
+            "category": "erasure",
+            "rule_id": "erasure",
+            "queue": "privacy",
+            "priority": "high",
+            "confidence": 0.9,
+            "level": "confident"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "compound",
+          "version": "1.0.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "match all uses the weakest question",
+      "pack": "compound",
+      "input": {
+        "message": "delete my data when you can"
+      },
+      "backend": {
+        "scores": {
+          "erasure": 0.9,
+          "urgency": 0.1
+        }
+      },
+      "expected": {
+        "action": "route",
+        "primary": "erasure",
+        "flags": [
+          {
+            "category": "erasure",
+            "rule_id": "erasure",
+            "queue": "privacy",
+            "priority": "high",
+            "confidence": 0.9,
+            "level": "confident"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "compound",
+          "version": "1.0.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "match all grey on weakest",
+      "pack": "compound",
+      "input": {
+        "message": "delete my data soon"
+      },
+      "backend": {
+        "scores": {
+          "erasure": 0.9,
+          "urgency": 0.3
+        }
+      },
+      "expected": {
+        "action": "route",
+        "primary": "erasure",
+        "flags": [
+          {
+            "category": "erasure",
+            "rule_id": "erasure",
+            "queue": "privacy",
+            "priority": "high",
+            "confidence": 0.9,
+            "level": "confident"
+          },
+          {
+            "category": "urgent_erasure",
+            "rule_id": "urgent-erasure",
+            "queue": "privacy",
+            "priority": "urgent",
+            "confidence": 0.3,
+            "level": "grey"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "compound",
+          "version": "1.0.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "outbound claims completed action",
+      "pack": "outbound-claims",
+      "input": {
+        "message": "Done! You've been unsubscribed from all messages."
+      },
+      "backend": {
+        "scores": {
+          "admits_liability": 0.03,
+          "claims_action_completed": 0.95,
+          "legal_statement": 0.03,
+          "promises_outcome": 0.03
+        }
+      },
+      "expected": {
+        "action": "route",
+        "primary": "claims_action_completed",
+        "flags": [
+          {
+            "category": "claims_action_completed",
+            "rule_id": "claims-action-completed",
+            "queue": "compliance",
+            "priority": "high",
+            "confidence": 0.95,
+            "level": "confident"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "outbound-claims",
+          "version": "0.1.1"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "outbound neutral handoff continues",
+      "pack": "outbound-claims",
+      "input": {
+        "message": "I've passed your request to our team and someone will follow up with you."
+      },
+      "backend": {
+        "scores": {
+          "admits_liability": 0.03,
+          "claims_action_completed": 0.03,
+          "legal_statement": 0.03,
+          "promises_outcome": 0.03
+        }
+      },
+      "expected": {
+        "action": "continue",
+        "primary": null,
+        "flags": [],
+        "error_code": null,
+        "policy": {
+          "name": "outbound-claims",
+          "version": "0.1.1"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "outbound admits liability",
+      "pack": "outbound-claims",
+      "input": {
+        "message": "This was entirely our fault and we accept responsibility."
+      },
+      "backend": {
+        "scores": {
+          "admits_liability": 0.9,
+          "claims_action_completed": 0.03,
+          "legal_statement": 0.03,
+          "promises_outcome": 0.03
+        }
+      },
+      "expected": {
+        "action": "route",
+        "primary": "admits_liability",
+        "flags": [
+          {
+            "category": "admits_liability",
+            "rule_id": "admits-liability",
+            "queue": "legal",
+            "priority": "urgent",
+            "confidence": 0.9,
+            "level": "confident"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "outbound-claims",
+          "version": "0.1.1"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "outbound legal statement",
+      "pack": "outbound-claims",
+      "input": {
+        "message": "Under GDPR we are required to reply within 30 days."
+      },
+      "backend": {
+        "scores": {
+          "admits_liability": 0.03,
+          "claims_action_completed": 0.03,
+          "legal_statement": 0.8,
+          "promises_outcome": 0.03
+        }
+      },
+      "expected": {
+        "action": "route",
+        "primary": "legal_statement",
+        "flags": [
+          {
+            "category": "legal_statement",
+            "rule_id": "legal-statement",
+            "queue": "legal",
+            "priority": "high",
+            "confidence": 0.8,
+            "level": "confident"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "outbound-claims",
+          "version": "0.1.1"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "outbound vague promise reviews",
+      "pack": "outbound-claims",
+      "input": {
+        "message": "We should be able to sort out some compensation."
+      },
+      "backend": {
+        "scores": {
+          "admits_liability": 0.03,
+          "claims_action_completed": 0.03,
+          "legal_statement": 0.03,
+          "promises_outcome": 0.35
+        }
+      },
+      "expected": {
+        "action": "review",
+        "primary": "promises_outcome",
+        "flags": [
+          {
+            "category": "promises_outcome",
+            "rule_id": "promises-outcome",
+            "queue": "support-lead",
+            "priority": "normal",
+            "confidence": 0.35,
+            "level": "grey"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "outbound-claims",
+          "version": "0.1.1"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "outbound multi flag in rule order",
+      "pack": "outbound-claims",
+      "input": {
+        "message": "Sorry, our mistake. Your refund has been processed."
+      },
+      "backend": {
+        "scores": {
+          "admits_liability": 0.7,
+          "claims_action_completed": 0.9,
+          "legal_statement": 0.03,
+          "promises_outcome": 0.03
+        }
+      },
+      "expected": {
+        "action": "route",
+        "primary": "admits_liability",
+        "flags": [
+          {
+            "category": "admits_liability",
+            "rule_id": "admits-liability",
+            "queue": "legal",
+            "priority": "urgent",
+            "confidence": 0.7,
+            "level": "confident"
+          },
+          {
+            "category": "claims_action_completed",
+            "rule_id": "claims-action-completed",
+            "queue": "compliance",
+            "priority": "high",
+            "confidence": 0.9,
+            "level": "confident"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "outbound-claims",
+          "version": "0.1.1"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    },
+    {
+      "name": "outbound keeps last customer message as context",
+      "pack": "outbound-claims",
+      "input": {
+        "message": "Sure, I can help with that.",
+        "recent_messages": [
+          "hi",
+          "stop texting me at jo@example.com"
+        ]
+      },
+      "backend": {
+        "scores": {
+          "admits_liability": 0.03,
+          "claims_action_completed": 0.03,
+          "legal_statement": 0.03,
+          "promises_outcome": 0.03
+        }
+      },
+      "expected": {
+        "action": "continue",
+        "primary": null,
+        "flags": [],
+        "error_code": null,
+        "policy": {
+          "name": "outbound-claims",
+          "version": "0.1.1"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      },
+      "expect_state": {
+        "assistant_reply": "Sure, I can help with that.",
+        "recent_messages": [
+          "stop texting me at [EMAIL]"
+        ]
+      }
+    },
+    {
+      "name": "outbound backend error reviews",
+      "pack": "outbound-claims",
+      "input": {
+        "message": "Let me check that for you."
+      },
+      "backend": {
+        "error": "backend_timeout"
+      },
+      "expected": {
+        "action": "review",
+        "primary": null,
+        "flags": [],
+        "error_code": "backend_timeout",
+        "policy": {
+          "name": "outbound-claims",
+          "version": "0.1.1"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      }
+    }
+  ]
+}

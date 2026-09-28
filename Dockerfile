@@ -4,6 +4,7 @@ WORKDIR /src
 COPY pyproject.toml README.md LICENSE ./
 COPY src ./src
 COPY packs ./packs
+COPY evals ./evals
 RUN uv build --wheel --out-dir /dist \
  && python -m venv /opt/venv \
  && /opt/venv/bin/pip install --no-cache-dir "$(ls /dist/*.whl)[server]"

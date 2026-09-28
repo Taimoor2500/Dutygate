@@ -14,7 +14,9 @@ clients
 docs
 tests
 examples
-evals
+evals/**
+!evals/*/dataset.jsonl
+!evals/*/keywords.yaml
 conformance
 .github
 .env

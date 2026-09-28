@@ -2,6 +2,8 @@
 
 **Catch the legal obligations hiding in ordinary support messages before your chatbot replies.**
 
+![DutyGate demo: legal triggers in customer messages are held before the bot replies](docs/assets/dutygate-demo.gif)
+
 "pls stop texting me" is an opt-out. "I want everything you have on me" is a privacy access
 request. "My lawyer will hear about this" is a legal threat. Topic triage files these under
 *billing* or *angry customer*, keyword lists miss the way people actually write, and an LLM bot

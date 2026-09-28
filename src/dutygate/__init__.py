@@ -11,7 +11,7 @@ from .engine import evaluate, evaluate_async
 from .errors import BackendError, ConfigError, DutyGateError, PackError
 from .gate import Gate
 from .holding import DEFAULT_HOLDING_REPLY, default_holding_reply
-from .schema import Pack, load_policy, load_policy_with_warnings
+from .schema import Pack, load_policy, load_policy_with_warnings, load_redaction
 
 __all__ = [
     "DEFAULT_HOLDING_REPLY",
@@ -38,4 +38,5 @@ __all__ = [
     "evaluate_async",
     "load_policy",
     "load_policy_with_warnings",
+    "load_redaction",
 ]

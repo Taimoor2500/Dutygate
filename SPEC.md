@@ -65,6 +65,16 @@ Each entry is `{name, pattern, replacement?, luhn?}`:
 Rules are applied in order, to the message and to every included recent message, before
 anything is sent to a backend.
 
+#### Redaction files
+
+A host MAY add its own rules without editing a pack, through a redaction file: a YAML mapping
+whose only key is `redaction`, a list in the format above. The file is named by the loader's
+`redaction` argument or, when that is absent, the `DUTYGATE_REDACTION_FILE` environment variable
+(an empty value means none). Its rules run before the pack's own rules, and both are applied.
+
+A missing or invalid file is a load error, never skipped: a host that asked for more redaction
+must not silently get less. A file rule whose name is already used by the pack is an error.
+
 ### 1.6 `questions`
 
 Each entry is `{id, instructions, criteria?}`:

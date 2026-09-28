@@ -17,12 +17,49 @@ retention policy for your jurisdiction. Use synthetic messages until you have ap
 ## Redaction
 
 Pack `redaction` rules run before any backend call. The reference packs redact:
-- email addresses
-- card numbers, only when they pass the Luhn check, so order numbers are left alone
+- email addresses, as `[EMAIL]`
+- card numbers, as `[CARD]`, only when they pass the Luhn check, so order numbers are left alone
+- IBANs, as `[IBAN]`
+- national IDs, as `[NATIONAL_ID]`: US Social Security numbers, UK National Insurance numbers,
+  Pakistani CNICs and Emirates IDs
+- phone numbers, as `[PHONE]`: international numbers starting with `+`, national numbers
+  starting with `0`, and North American numbers written with separators. Plain runs of digits,
+  dates, prices and order numbers are left alone.
 
-Add patterns for anything else you must not send, such as phone numbers, account numbers or
-national IDs. Patterns are trusted configuration and should run in linear time: a pathological
-regex runs on every message.
+Regular expressions can't find names or street addresses reliably, so the reference packs
+don't try. If you must not send them, remove them before calling the gate, for example with
+a named-entity tool.
+
+### Your own rules
+
+Put extra rules in a redaction file, in the same format as a pack's `redaction` list:
+
+```yaml
+# redaction.yaml
+redaction:
+  - name: account_number
+    pattern: 'ACC-\d{6,10}'
+    replacement: '[ACCOUNT]'
+```
+
+Then point DutyGate at it. Your rules run first, then the pack's, so both apply:
+
+```bash
+export DUTYGATE_REDACTION_FILE=redaction.yaml   # applies to every pack: Gate, CLI and sidecar
+dutygate validate legal-triggers                # checks your file too
+```
+
+or, in code:
+
+```python
+gate = Gate.from_pack("legal-triggers", redaction="redaction.yaml")
+```
+
+A missing or invalid file stops loading with an error that names the file; it is never
+skipped. A rule can't reuse a name the pack already has.
+
+Patterns are trusted configuration and should run in linear time: a pathological regex runs
+on every message.
 
 ## What DutyGate stores
 

@@ -30,7 +30,7 @@ async def test_gate_returns_decision(client: httpx.AsyncClient) -> None:
     body = res.json()
     assert body["action"] == "route" and body["primary"] == "opt_out"
     assert body["conversation_id"] == "c_1"
-    assert body["policy"] == {"name": "legal-triggers", "version": "0.1.0"}
+    assert body["policy"] == {"name": "legal-triggers", "version": "0.2.0"}
     assert body["id"].startswith("dec_")
 
 
@@ -192,7 +192,7 @@ async def test_readyz_lists_packs(client: httpx.AsyncClient) -> None:
     res = await client.get("/readyz")
     assert res.status_code == 200
     assert res.json()["packs"] == [
-        {"name": "legal-triggers", "version": "0.1.0"},
+        {"name": "legal-triggers", "version": "0.2.0"},
         {"name": "compound", "version": "1.0.0"},
     ]
 

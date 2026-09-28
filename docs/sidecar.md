@@ -85,5 +85,6 @@ Content-Type: application/json
 | `DUTYGATE_JEV_MODEL` | `jev-latest` | pin a version in production |
 | `DUTYGATE_TIMEOUT_MS` | `5000` | total budget per message, retries included |
 | `DUTYGATE_MAX_RETRIES` | `1` | retries on connection errors, 429, 529 and 5xx |
+| `DUTYGATE_REDACTION_FILE` | (none) | extra redaction rules for every pack; see [privacy](privacy.md#your-own-rules) |
 
 Invalid values stop the server at startup with a message naming the variable.

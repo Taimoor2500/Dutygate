@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
+import re
 from functools import cached_property
 from pathlib import Path
 from typing import Annotated, Any, Literal
@@ -18,6 +20,9 @@ from .errors import PackError
 QUESTION_ID = r"^[a-z][a-z0-9_]{0,63}$"
 RULE_ID = r"^[a-z0-9][a-z0-9-]{0,63}$"
 SEMVER = r"^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$"
+
+# A YAML file of extra redaction rules that every pack loaded in this process also applies.
+REDACTION_FILE_ENV = "DUTYGATE_REDACTION_FILE"
 
 PRIORITY_RANK: dict[str, int] = {"urgent": 0, "high": 1, "normal": 2, "low": 3}
 
@@ -58,6 +63,10 @@ class RedactionRule(_Model):
     pattern: NonEmptyStr
     replacement: str | None = None
     luhn: bool = False
+
+
+class RedactionFile(_Model):
+    redaction: tuple[RedactionRule, ...] = ()
 
 
 class Criteria(_Model):
@@ -172,8 +181,54 @@ def _read_source(source: str | Path | dict[str, Any]) -> dict[str, Any]:
     return data
 
 
-def load_policy_with_warnings(source: str | Path | dict[str, Any]) -> tuple[Pack, list[str]]:
-    """Load and fully validate a pack. Raises PackError listing every problem found."""
+def load_redaction(source: str | Path) -> tuple[RedactionRule, ...]:
+    """Load a redaction file: a YAML mapping whose only key is a ``redaction`` list, in the
+    same format as a pack's. Raises PackError, naming the file, for every problem found."""
+    path = Path(source)
+    if not path.is_file():
+        raise PackError([f"redaction file not found: {path}"])
+    try:
+        data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    except yaml.YAMLError as exc:
+        raise PackError([f"{path}: invalid YAML: {exc}"]) from exc
+    if not isinstance(data, dict):
+        raise PackError(
+            [f"{path}: a redaction file must be a YAML mapping with a 'redaction' list"]
+        )
+    try:
+        rules = RedactionFile.model_validate(data).redaction
+    except ValidationError as exc:
+        raise PackError([f"{path}: {err}" for err in _format_validation_error(exc)]) from None
+
+    errors: list[str] = []
+    seen: set[str] = set()
+    for rule in rules:
+        if rule.name in seen:
+            errors.append(f"{path}: redaction: duplicate redaction name '{rule.name}'")
+        seen.add(rule.name)
+        try:
+            re.compile(rule.pattern)
+        except re.error as exc:
+            errors.append(f"{path}: redaction.{rule.name}: invalid regex: {exc}")
+    if errors:
+        raise PackError(errors)
+    return rules
+
+
+def _redaction_source(explicit: str | Path | None) -> str | Path | None:
+    if explicit is not None:
+        return explicit
+    return os.environ.get(REDACTION_FILE_ENV) or None
+
+
+def load_policy_with_warnings(
+    source: str | Path | dict[str, Any], *, redaction: str | Path | None = None
+) -> tuple[Pack, list[str]]:
+    """Load and fully validate a pack. Raises PackError listing every problem found.
+
+    ``redaction`` (or the ``DUTYGATE_REDACTION_FILE`` environment variable) names a file of
+    extra redaction rules. They run before the pack's own rules, and both are applied.
+    """
     from .validate import semantic_errors, semantic_warnings
 
     data = _read_source(source)
@@ -184,8 +239,24 @@ def load_policy_with_warnings(source: str | Path | dict[str, Any]) -> tuple[Pack
     errors = semantic_errors(pack)
     if errors:
         raise PackError(errors)
+
+    extra_source = _redaction_source(redaction)
+    if extra_source is not None:
+        extra = load_redaction(extra_source)
+        own = {r.name for r in pack.redaction}
+        clashes = [
+            f"{extra_source}: redaction.{r.name}: duplicate redaction name '{r.name}' "
+            f"(pack '{pack.name}' already has a rule with this name)"
+            for r in extra
+            if r.name in own
+        ]
+        if clashes:
+            raise PackError(clashes)
+        pack = pack.model_copy(update={"redaction": extra + pack.redaction})
     return pack, semantic_warnings(pack)
 
 
-def load_policy(source: str | Path | dict[str, Any]) -> Pack:
-    return load_policy_with_warnings(source)[0]
+def load_policy(
+    source: str | Path | dict[str, Any], *, redaction: str | Path | None = None
+) -> Pack:
+    return load_policy_with_warnings(source, redaction=redaction)[0]

@@ -6,6 +6,16 @@ All notable changes are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+- Redaction files: your own redaction rules, in a YAML file named by `DUTYGATE_REDACTION_FILE`
+  or `Gate.from_pack(..., redaction=...)`. They run before the pack's rules, and both apply.
+  A missing or invalid file is an error, never skipped. `load_redaction()` loads one directly.
+
+### Changed
+- Packs `legal-triggers` 0.2.0 and `outbound-claims` 0.2.0 also redact phone numbers, IBANs and
+  national IDs (US SSN, UK National Insurance number, Pakistani CNIC, Emirates ID) before any
+  backend call.
+
 ## [0.1.0] - 2026-09-28
 
 ### Added

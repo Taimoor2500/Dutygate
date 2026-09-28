@@ -127,7 +127,7 @@ any no-code tool ([n8n / Zapier recipe](examples/n8n/README.md)). See
      "priority": "high", "confidence": 0.31, "level": "grey"}
   ],
   "error": null,
-  "policy": {"name": "legal-triggers", "version": "0.1.0"},
+  "policy": {"name": "legal-triggers", "version": "0.2.0"},
   "backend": {"name": "typesafe-jev", "model": "jev-1.13.0"},
   "conversation_id": "c_123",
   "latency_ms": 212

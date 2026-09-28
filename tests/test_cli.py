@@ -49,7 +49,7 @@ def test_validate_good_pack(runner: CliRunner) -> None:
     res = runner.invoke(main, ["validate", PACK])
     assert res.exit_code == 0, res.output
     assert "ok" in res.stdout
-    assert "legal-triggers 0.1.0" in res.stdout
+    assert "legal-triggers 0.2.0" in res.stdout
 
 
 def test_validate_bad_pack_lists_every_error(runner: CliRunner, tmp_path: Path) -> None:

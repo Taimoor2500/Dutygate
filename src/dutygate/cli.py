@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import sys
 from pathlib import Path
 from typing import Literal, NoReturn
@@ -13,7 +14,7 @@ from ._version import __version__
 from .backends.base import Backend
 from .bundled import bundled_dataset, bundled_keywords, bundled_pack, bundled_packs
 from .errors import ConfigError, PackError
-from .schema import Pack, load_policy, load_policy_with_warnings
+from .schema import REDACTION_FILE_ENV, Pack, load_policy, load_policy_with_warnings, load_redaction
 
 BackendKind = Literal["jev", "replay", "keyword"]
 EXIT_FOR_ACTION = {"continue": 0, "route": 10, "review": 11}
@@ -50,6 +51,14 @@ def load_pack_or_exit(path: Path) -> Pack:
         return load_policy(path)
     except PackError as exc:
         fail_pack(exc)
+
+
+def extra_redaction_note() -> str:
+    source = os.environ.get(REDACTION_FILE_ENV)
+    if not source:
+        return ""
+    count = len(load_redaction(source))
+    return f", {count} extra redaction rule{'s' if count != 1 else ''} from {source}"
 
 
 def is_conformance_file(path: Path) -> bool:
@@ -113,7 +122,8 @@ def validate(packs: tuple[Path, ...]) -> None:
             continue
         for warning in warnings:
             click.echo(f"{path}: warning: {warning}", err=True)
-        click.echo(f"{path}: ok ({pack.name} {pack.version}, {len(pack.rules)} rules)")
+        extra = extra_redaction_note()
+        click.echo(f"{path}: ok ({pack.name} {pack.version}, {len(pack.rules)} rules{extra})")
     if failed:
         sys.exit(1)
 

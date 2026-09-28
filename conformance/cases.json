@@ -39,7 +39,7 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -77,7 +77,7 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -115,7 +115,7 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -153,7 +153,7 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -191,7 +191,7 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -229,7 +229,7 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -258,7 +258,7 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -304,7 +304,7 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -350,7 +350,7 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -396,7 +396,7 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -434,7 +434,7 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -480,7 +480,7 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -518,7 +518,7 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -556,7 +556,7 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -585,7 +585,7 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -623,7 +623,7 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -661,7 +661,7 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -690,7 +690,7 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -728,7 +728,7 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -766,7 +766,7 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -804,7 +804,7 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -842,7 +842,7 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -862,7 +862,7 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -882,7 +882,7 @@
         "error_code": "message_too_long",
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -911,7 +911,7 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -949,7 +949,7 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -990,13 +990,54 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
       },
       "expect_state": {
         "customer_message": "card [CARD] was charged twice, I disputed it with my bank"
+      }
+    },
+    {
+      "name": "phone, iban and national id redacted before backend",
+      "pack": "legal-triggers",
+      "input": {
+        "message": "delete my data. I'm on +44 7700 900123, IBAN GB29 NWBK 6016 1331 9268 19, NI AB 12 34 56 C"
+      },
+      "backend": {
+        "scores": {
+          "legal_threat": 0.02,
+          "regulator_complaint": 0.02,
+          "privacy_request": 0.91,
+          "chargeback_dispute": 0.02,
+          "opt_out": 0.02,
+          "accessibility_request": 0.02
+        }
+      },
+      "expected": {
+        "action": "route",
+        "primary": "privacy_request",
+        "flags": [
+          {
+            "category": "privacy_request",
+            "rule_id": "privacy-request",
+            "queue": "privacy",
+            "priority": "high",
+            "confidence": 0.91,
+            "level": "confident"
+          }
+        ],
+        "error_code": null,
+        "policy": {
+          "name": "legal-triggers",
+          "version": "0.2.0"
+        },
+        "backend_name": "replay",
+        "conversation_id": null
+      },
+      "expect_state": {
+        "customer_message": "delete my data. I'm on [PHONE], IBAN [IBAN], NI [NATIONAL_ID]"
       }
     },
     {
@@ -1031,7 +1072,7 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -1063,7 +1104,7 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -1106,7 +1147,7 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": "c_sms_1"
@@ -1142,7 +1183,7 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -1183,7 +1224,7 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -1221,7 +1262,7 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -1246,7 +1287,7 @@
         "error_code": "backend_timeout",
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -1268,7 +1309,7 @@
         "error_code": "backend_unavailable",
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -1290,7 +1331,7 @@
         "error_code": "backend_auth",
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -1312,7 +1353,7 @@
         "error_code": "backend_rejected",
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -1334,7 +1375,7 @@
         "error_code": "malformed_response",
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -1362,7 +1403,7 @@
         "error_code": "malformed_response",
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -1391,7 +1432,7 @@
         "error_code": "malformed_response",
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -1420,7 +1461,7 @@
         "error_code": "malformed_response",
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -1449,7 +1490,7 @@
         "error_code": "malformed_response",
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -1473,7 +1514,7 @@
         "error_code": "malformed_response",
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -1503,7 +1544,7 @@
         "error_code": null,
         "policy": {
           "name": "legal-triggers",
-          "version": "0.1.0"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -1657,7 +1698,7 @@
         "error_code": null,
         "policy": {
           "name": "outbound-claims",
-          "version": "0.1.1"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -1684,7 +1725,7 @@
         "error_code": null,
         "policy": {
           "name": "outbound-claims",
-          "version": "0.1.1"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -1720,7 +1761,7 @@
         "error_code": null,
         "policy": {
           "name": "outbound-claims",
-          "version": "0.1.1"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -1756,7 +1797,7 @@
         "error_code": null,
         "policy": {
           "name": "outbound-claims",
-          "version": "0.1.1"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -1792,7 +1833,7 @@
         "error_code": null,
         "policy": {
           "name": "outbound-claims",
-          "version": "0.1.1"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -1836,7 +1877,7 @@
         "error_code": null,
         "policy": {
           "name": "outbound-claims",
-          "version": "0.1.1"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -1867,7 +1908,7 @@
         "error_code": null,
         "policy": {
           "name": "outbound-claims",
-          "version": "0.1.1"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null
@@ -1895,7 +1936,7 @@
         "error_code": "backend_timeout",
         "policy": {
           "name": "outbound-claims",
-          "version": "0.1.1"
+          "version": "0.2.0"
         },
         "backend_name": "replay",
         "conversation_id": null

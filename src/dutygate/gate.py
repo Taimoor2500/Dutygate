@@ -36,8 +36,11 @@ class Gate:
         backend: Backend | None = None,
         *,
         on_decision: Callable[[Decision], None] | None = None,
+        redaction: str | Path | None = None,
     ) -> Gate:
-        pack = load_policy(path)
+        """Load a pack by path or bundled name. ``redaction`` names a file of extra redaction
+        rules to apply as well (default: the ``DUTYGATE_REDACTION_FILE`` environment variable)."""
+        pack = load_policy(path, redaction=redaction)
         if backend is None:
             from .backends.jev import TypeSafeJevBackend
 

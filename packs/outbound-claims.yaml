@@ -8,7 +8,7 @@
 # Not legal advice: have counsel review what your bot may and may not say.
 schema_version: 1
 name: outbound-claims
-version: 0.1.1
+version: 0.2.0
 description: >-
   Flags chatbot replies that claim an action was completed, admit liability, make legal
   statements, or promise outcomes, before the reply is sent.
@@ -32,6 +32,19 @@ redaction:
     pattern: '\b(?:\d[ -]?){12,18}\d\b'
     luhn: true
     replacement: '[CARD]'
+  # Bank accounts in IBAN form: country code, two check digits, then 11 to 30 letters or digits.
+  - name: iban
+    pattern: '\b[A-Z]{2}\d{2}(?: ?[A-Z0-9]){11,30}\b'
+    replacement: '[IBAN]'
+  # US Social Security numbers, UK National Insurance numbers, Pakistani CNICs, Emirates IDs.
+  - name: national_id
+    pattern: '\b(?:\d{3}-\d{2}-\d{4}|[A-CEGHJ-PR-TW-Z][A-CEGHJ-NPR-TW-Z] ?\d{2} ?\d{2} ?\d{2} ?[A-D]|\d{5}-\d{7}-\d|784-?\d{4}-?\d{7}-?\d)\b'
+    replacement: '[NATIONAL_ID]'
+  # International numbers (+ then 8 to 15 digits), national numbers with a leading 0, and
+  # North American numbers written with separators. Plain digit runs are left alone.
+  - name: phone
+    pattern: '\+\d(?:[ .()-]{0,2}\d){7,14}|(?<![\w+])0\d(?:[ .-]?\d){8,10}(?!\w)|(?<![\w+])\(?[2-9]\d{2}\)?[ .-]?[2-9]\d{2}[ .-]\d{4}(?!\w)'
+    replacement: '[PHONE]'
 
 questions:
   - id: admits_liability

@@ -1,6 +1,21 @@
-# DutyGate
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Taimoor2500/Dutygate/main/docs/assets/dutygate-logo-dark.svg">
+    <img src="https://raw.githubusercontent.com/Taimoor2500/Dutygate/main/docs/assets/dutygate-logo.svg" alt="DutyGate" width="340">
+  </picture>
+</p>
 
-**Catch the legal obligations hiding in ordinary support messages before your chatbot replies.**
+<p align="center">
+  <strong>Catch the legal obligations hiding in ordinary support messages before your chatbot replies.</strong>
+</p>
+
+<p align="center">
+  <a href="https://pypi.org/project/dutygate/"><img src="https://img.shields.io/pypi/v/dutygate?color=4f46e5&label=pypi" alt="PyPI"></a>
+  <a href="https://www.npmjs.com/package/dutygate-client"><img src="https://img.shields.io/npm/v/dutygate-client?color=4f46e5&label=npm" alt="npm"></a>
+  <a href="https://pypi.org/project/dutygate/"><img src="https://img.shields.io/pypi/pyversions/dutygate?color=4f46e5" alt="Python versions"></a>
+  <a href="https://github.com/Taimoor2500/Dutygate/actions/workflows/ci.yml"><img src="https://github.com/Taimoor2500/Dutygate/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-4f46e5" alt="MIT license"></a>
+</p>
 
 ![DutyGate demo: legal triggers in customer messages are held before the bot replies](https://raw.githubusercontent.com/Taimoor2500/Dutygate/main/docs/assets/dutygate-demo.gif)
 
